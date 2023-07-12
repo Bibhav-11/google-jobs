@@ -24,7 +24,7 @@ function Home( {jobs, setJobs }) {
         setLoading(true);
         axios({
             method: 'get',
-            url: 'http://localhost:5000/api',
+            url: 'google-jobs-react.onrender.com/api',
             params: {
                 'query': query.split(' ').join('+'),
                 'ltype': wfh ? 1 : 0,
