@@ -28,7 +28,7 @@ export default function JobDetail() {
         setLoading(true);
         axios({
             method: 'get',
-            url: 'google-jobs-react.onrender.com/api',
+            url: 'https://google-jobs-react.onrender.com/api',
             params: {
                 'query': query,
                 'location': location
@@ -57,7 +57,7 @@ export default function JobDetail() {
         if(job.length) {
             axios({
                 method: 'get',
-                url: 'google-jobs-react.onrender.com/apply',
+                url: 'https://google-jobs-react.onrender.com/apply',
                 params: {
                     'query': job[0].job_id,
                 }
