@@ -18,7 +18,6 @@ function Home( {jobs, setJobs }) {
     const inputRef = useRef();
 
 
-
     useEffect(() => {        
         if(!query) return;
         setLoading(true);
