@@ -14,7 +14,7 @@ function Home( {jobs, setJobs }) {
     const [location, setLocation] = useState('')
     const [locationInput, setLocationInput] = useState('');
     const [wfh, setWfh] = useState(false);
-    const [query, setQuery] = useState('');
+    const [query, setQuery] = useState('nepal');
     const inputRef = useRef();
 
 
@@ -23,14 +23,15 @@ function Home( {jobs, setJobs }) {
         setLoading(true);
         axios({
             method: 'get',
-            url: 'https://google-jobs-react.onrender.com/api',
+            // url: 'https://google-jobs-react.onrender.com/api',
+             url: 'http://localhost:5000/api',
             params: {
                 'query': query.split(' ').join('+'),
                 'ltype': wfh ? 1 : 0,
                 'location': location,
             }
         })
-        .then(response => {if(response.data.error) {throw new Error(response.data.error)} else {setJobs(response.data.jobs_results);setError('');}})
+        .then(response => {console.log(response.data);if(response.data.error) {throw new Error(response.data.error)} else {setJobs(response.data.jobs_results);setError('');}})
         .catch(err => setError(`Sorry! ${err.message}`))
         .finally(() => setLoading(false))
 
@@ -38,8 +39,6 @@ function Home( {jobs, setJobs }) {
     }, [query, wfh, location]);
 
 
-  
-    
 
 
     const renderedCards = jobs ? jobs.map(job => {   
@@ -47,7 +46,7 @@ function Home( {jobs, setJobs }) {
         if(!job.location || !job.company_name) return;
 
         return (
-            <Link to={`/job/${job.company_name.split(' ').splice(0,2).join('-').toLowerCase()}-${slugify(job.title)}-${job.location.split(",")[0].trim().toLowerCase()}-${randomize(job.job_id)}`} state={{job: job}} key={job.job_id} className="bg-white cursor-pointer shadow-default rounded-[4px] p-3">
+            <Link to={`/job/${job.company_name.split(' ').splice(0,2).join('-').toLowerCase()}-${slugify(job.title)}-${job.location.split(",")[0].trim().toLowerCase()}-${randomize(job.job_id)}`} state={{job: job}} key={job.job_id} className="bg-white cursor-pointer shadow-default rounded-[4px] p-3 self-stretch">
                 <div className="flex gap-4 text-primary text-xs font-bold font-Roboto">
                     {job.thumbnail ? <img src={job.thumbnail} className="h-[90px] w-[90px] rounded-[4px] border"/>: <div className="h-[90px] w-[90px] rounded-[4px] border flex justify-center items-center text-3xl font-normal bg-[#0097A7] text-white">{job.company_name[0]}</div>}
                     <div>
@@ -117,14 +116,17 @@ function Home( {jobs, setJobs }) {
     
                 </section>
 
-                <div className='flex-[2] mt-7'>
+                <div className='flex-[2] mt-7 text-primary text-sm font-semibold'>
 
-                    {location && query ? <p className='mb-3 text-primary font-medium font-Poppins text-sm'>Showing results for <span className="font-bold">"{query}"</span>  jobs in {location.charAt(0).toUpperCase() + location.slice(1).split('+').join(' ')}</p> : ''}
+
+                    {  
+                        query === "nepal" ? (<p>Showing results for the most popular jobs in Nepal</p>) :
+                        (query && location ? (<p>Showing results for "{query}" jobs in {location}</p>) : (<p>Showing results for "{query}" jobs</p>))
+                    }
+
                     
-                    <section className="flex flex-col gap-6 pb-2 min-h-[500px]">
-                        <div className='flex flex-grow flex-col justify-center items-center text-light'>
-                            {error && error}
-                        </div>
+                    <section className="flex flex-col gap-6 py-2 min-h-[500px] items-center justify-center text-light">
+                        {error && error}
                         {loading ? (<div className='flex flex-grow flex-col justify-center items-center gap-1'><ScaleLoader color="#334680" /> <div className='font-Roboto text-primary text-sm'>Fetching Data</div></div>) : renderedCards}
                     </section>
                 </div>

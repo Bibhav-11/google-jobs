@@ -13,22 +13,29 @@ export default function JobDetail() {
     const [job, setJob] = useState([]);
     const [apply, setApply] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [loadingApply, setLoadingApply] = useState(false);
     const [isError, setisError] = useState(false);
 
     const { state } = useLocation();
     const { id } = useParams();
 
     const idArr = id.split('-');
-    const [location] = idArr.slice(-2,-1);
-    // const [key] = idArr.slice(-1);
-    const query = idArr.slice(0,-2).join(' ');
+    let query, location;
+
+    if(idArr.length <= 5) {query = idArr.join(' '); location=''}
+    else {
+        [location] = idArr.slice(-2,-1);
+        // const [key] = idArr.slice(-1);
+        query = idArr.slice(0,-2).join(' ');
+    }
 
 
     useEffect(() => {
         setLoading(true);
         axios({
             method: 'get',
-            url: 'https://google-jobs-react.onrender.com/api',
+            // url: 'https://google-jobs-react.onrender.com/api',
+            url: 'http://localhost:5000/api',
             params: {
                 'query': query,
                 'location': location
@@ -55,14 +62,17 @@ export default function JobDetail() {
 
     useEffect(() => {
         if(job.length) {
+            setLoadingApply(true);
             axios({
                 method: 'get',
-                url: 'https://google-jobs-react.onrender.com/apply',
+                // url: 'https://google-jobs-react.onrender.com/apply',
+                url: 'http://localhost:5000/apply',
                 params: {
                     'query': job[0].job_id,
                 }
             })
             .then(response => {setApply(response.data.apply_options)})
+            .finally(() => setLoadingApply(false))
         }
 
     }, [job]);
@@ -82,6 +92,7 @@ export default function JobDetail() {
                         <section className="font-Poppins whitespace-nowrap md:basis-64">
                             <a href="/" className="text-skyblue font-medium text-sm">Back to Search</a>
                             <p className="mt-8 mb-5 text-sm text-light uppercase font-bold">How to apply</p>
+                            {loadingApply && <div className='flex items-center justify-center w-2/3'><ScaleLoader height="20px" color="#334680" /></div>}
                             {renderedApply}
                             {/* <p className="mt-4 text-sm font-medium text-primary">Please email a copy of your resume and online portfolio to <span className="text-skyblue">wes@kasisto.com</span> & CC <span className="text-skyblue">eric@kasisto.com</span></p> */}
                         </section>
@@ -121,4 +132,7 @@ export default function JobDetail() {
 
 
 
-
+// {error && error}
+//                         {loading ? (
+//                             <><ScaleLoader color="#334680" /> 
+//                             <div className='font-Roboto text-primary text-sm'>Fetching Data</div></>) : <div className='justify-self-stretch self-stretch'>{renderedCards}</div>}
