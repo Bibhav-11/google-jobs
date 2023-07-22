@@ -34,8 +34,8 @@ export default function JobDetail() {
         setLoading(true);
         axios({
             method: 'get',
-            // url: 'https://google-jobs-react.onrender.com/api',
-            url: 'http://localhost:5000/api',
+            url: 'https://google-jobs-react.onrender.com/api',
+            // url: 'http://localhost:5000/api',
             params: {
                 'query': query,
                 'location': location
@@ -65,8 +65,8 @@ export default function JobDetail() {
             setLoadingApply(true);
             axios({
                 method: 'get',
-                // url: 'https://google-jobs-react.onrender.com/apply',
-                url: 'http://localhost:5000/apply',
+                url: 'https://google-jobs-react.onrender.com/apply',
+                // url: 'http://localhost:5000/apply',
                 params: {
                     'query': job[0].job_id,
                 }

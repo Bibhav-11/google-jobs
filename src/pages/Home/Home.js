@@ -21,17 +21,18 @@ function Home( {jobs, setJobs }) {
     useEffect(() => {        
         if(!query) return;
         setLoading(true);
+        setError('');
         axios({
             method: 'get',
-            // url: 'https://google-jobs-react.onrender.com/api',
-             url: 'http://localhost:5000/api',
+            url: 'https://google-jobs-react.onrender.com/api',
+            //  url: 'http://localhost:5000/api',
             params: {
                 'query': query.split(' ').join('+'),
                 'ltype': wfh ? 1 : 0,
                 'location': location,
             }
         })
-        .then(response => {console.log(response.data);if(response.data.error) {throw new Error(response.data.error)} else {setJobs(response.data.jobs_results);setError('');}})
+        .then(response => {console.log(response.data);if(response.data.error) {throw new Error(response.data.error)} else {setJobs(response.data.jobs_results);}})
         .catch(err => setError(`Sorry! ${err.message}`))
         .finally(() => setLoading(false))
 
