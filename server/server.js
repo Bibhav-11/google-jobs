@@ -32,7 +32,7 @@ app.get("/api", (req, res) => {
         // if(pagination) axios.get(`https://serpapi.com/search?engine=google_jobs&api_key=fd00664621d4317710304aaf9f0a38c17f7d5870e4b0a784c2ace4d9e8adf7dd&q=${query}&start=${pagination}&ltype=${ltype}&location=${location}`)
         // .then(response => {res.json(response.data)});
         
-        axios.get(`https://serpapi.com/search?engine=google_jobs&api_key=fd00664621d4317710304aaf9f0a38c17f7d5870e4b0a784c2ace4d9e8adf7dd&q=${query}&location=${location}`)
+        axios.get(`https://serpapi.com/search?engine=google_jobs&api_key=8638f93bb029f8f12a54b1b33119a1ab8c02d9aa7cf04c7b9f14fb433e72e943&q=${query}&location=${location}`)
         .then(response => {res.json(response.data); console.log(response.data)});
 
     }
@@ -46,7 +46,7 @@ app.get("/api", (req, res) => {
 app.get("/apply", (req, res) => {
     const query = req.query.query
 
-    axios.get(`https://serpapi.com/search?engine=google_jobs_listing&api_key=fd00664621d4317710304aaf9f0a38c17f7d5870e4b0a784c2ace4d9e8adf7dd&q=${query}`)
+    axios.get(`https://serpapi.com/search?engine=google_jobs_listing&api_key=8638f93bb029f8f12a54b1b33119a1ab8c02d9aa7cf04c7b9f14fb433e72e943&q=${query}`)
     .then(response => {res.json(response.data)});
 
     
